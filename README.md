@@ -293,7 +293,70 @@ df_new = pd.concat([df, pd.DataFrame({'책소개 키워드':extracted_key})], ax
 
 : 한국어의 특징을 반영하여 비지도학습 기반으로 한국어의 단어를 추출하며 토크나이저를 이용하지 않으면서도 단어/키워드 추출을 수행한다.
 
-- df['책소개']는 ‘\n’을 포함하여 하나의 문장으로 이루어져 있기 때문에
+▶︎  df['책소개']는 **‘\n’**을 포함하여 하나의 문장으로 이루어져 있기 때문에 이를 기준으로 여려개의 문장으로 나눠야 한다.
+
+```python
+for text in df['책소개']:
+  text.split('\n')
+  text_list.append(text.split('\n'))
+
+text_list[:2]
+```
+
+![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/0765ea10-fe08-452b-8cf9-40625e070fd4/Untitled.png)
+
+▶︎  normalize 함수를 이용하여 **불필요한 특수 기호를 제거**해야한다.
+
+ex) ‘▶︎', ’!’, ‘★’ 등…
+
+```python
+from krwordrank.hangle import normalize
+texts = [[normalize(text, english=True, number=True) for text in texts] for texts in text_list]
+texts[:2]
+```
+
+![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/26331833-8c96-4b1f-bbb2-4bfc123b8ea7/Untitled.png)
+
+▶︎ texts를 df에 **책소개 전처리**라는 열(column)이름으로 추가한다.
+
+▶︎ `KRWordRank` 패키지를 이용하여 df[’책소개 전처리’] 내에서 중요한 키워드를 추출한다.
+```python
+from krwordrank.word import KRWordRank
+from konlpy.tag import Okt
+
+def KeyWord(x):
+  sentence = []
+  wordrank_extractor = KRWordRank(
+    min_count = 1, # 단어의 최소 출현 빈도수 (그래프 생성 시)
+    max_length = 10, # 단어의 최대 길이
+    verbose = True
+    )
+
+  beta = 0.85    # PageRank의 decaying factor beta
+  max_iter = 20
+  keywords, rank, graph = wordrank_extractor.extract(x, beta, max_iter)
+  word_list = list()
+  for word, r in sorted(keywords.items(), key=lambda x:x[1], reverse=True)[:30]:
+    if r >=1:
+      word_list.append(word)
+	# 한 문장으로 합친다.
+  sent = ' '.join(word_list)
+  sentence.append(sent)
+
+	# 형태소 추출
+  okt = Okt()
+  OKT = okt.pos(sent)
+  keyword_list = []
+
+  # 조사와 접미사를 제외한 나머지만을 키워드로 채택
+  for word, tag in OKT:
+    if (tag not in ['Josa']) and (tag not in ['Suffix']):
+      keyword_list.append(word)
+  return keyword_list
+
+df['책소개 키워드 수정본'] = df['책소개 키워드'].apply(KeyWord)
+```
+![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/573495e6-a341-4643-8097-47c16eaacced/Untitled.png)
 
 ## 3️⃣ 워드 클라우드 시각화
 
