@@ -2,6 +2,10 @@
 
 ---
 
+[GitHub - sigorzav-jong/Study_week-2](https://github.com/sigorzav-jong/Study_week-2.git)
+
+---
+
 # 1. 프로젝트 개요
 
 주제 : 교보문고 베스트셀러 도서 추천시스템
@@ -320,6 +324,7 @@ texts[:2]
 ▶︎ texts를 df에 **책소개 전처리**라는 열(column)이름으로 추가한다.
 
 ▶︎ `KRWordRank` 패키지를 이용하여 df[’책소개 전처리’] 내에서 중요한 키워드를 추출한다.
+
 ```python
 from krwordrank.word import KRWordRank
 from konlpy.tag import Okt
@@ -356,6 +361,7 @@ def KeyWord(x):
 
 df['책소개 키워드 수정본'] = df['책소개 키워드'].apply(KeyWord)
 ```
+
 ![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/573495e6-a341-4643-8097-47c16eaacced/Untitled.png)
 
 ## 3️⃣ 워드 클라우드 시각화
@@ -459,7 +465,7 @@ df['책소개 키워드 수정본'] = df['책소개 키워드'].apply(KeyWord)
 
 : 도서의 키워드에서 각 단어의 등장 여부를 1과 0의 값으로 하여 도서를 벡터화한다. 벡터화 방법으로 `CountVectorizer 클래스`를 이용한 벡터화와 One-hot encoding 함수 정의를 통한 벡터화, 2가지 방법을 시도해보았다.
 
-## ▶︎ ****CountVectorizer****
+### ▶︎ ****CountVectorizer****
 
 : `CountVectorizer`는 `sklearn.feature_extraction`에서 제공하는 문서 벡터화 클래스로, 주어진 문서에 각각의 단어가 몇 번 등장했는지를 count하여 document-term matrix를 만든다.
 
@@ -480,7 +486,7 @@ book_mat_keyword_1.toarray()
 
 - 하지만 CountVectorizer를 실행하면 이미 완료된 키워드 토큰화가 다시 토큰화되는 문제가 발생했다. 이에 따라 기존 One-hot encoding을 이용한 벡터화로 다시 시도해보았다.
 
-## ▶︎ **원-핫 인코딩**(One-hot encoding)
+### ▶︎ **원-핫 인코딩**(One-hot encoding)
 
 : 범주의 개수와 같은 크기의 벡터에 대하여 0과 1을 사용해 어떤 범주에 속하는지 표현하는 인코딩 방식이다. 문장에서 특정 단어의 출현 여부를 0과 1로 표현하여 단어 임베딩을 진행할 수 있다.
 
@@ -759,7 +765,7 @@ for idx, row in top_products.iterrows():
 
 # 7.  **프로젝트 결과**
 
-## ✅추천 결과 비교
+## ✅ 추천 결과 비교
 
 입력한 도서와 유사한 도서 10권 추천
 
