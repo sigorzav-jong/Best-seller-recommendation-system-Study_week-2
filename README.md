@@ -1,4 +1,4 @@
-# 교보문고 베스트셀러 추천 시스템
+# 교보문고 베스트셀러 추천 시스템 구현
 
 ---
 
@@ -22,8 +22,8 @@
 
 ## 2️⃣ 사용 데이터
 
-- 교보문고  [소설, 인문, 자기계발, 경제/경영] 4가지 영역의 베스트 셀러 도서 1000권씩
-- 총 1000개*4 = 4000개 도서의 `키워드Pick`과 `책 소개` 데이터 수집
+- 교보문고  [소설, 인문, 자기계발, 경제/경영] 4가지 장르의 베스트셀러 1위~1000위 도서
+- 총 3713권 도서의 `키워드Pick`과 `책 소개` 데이터 수집
 
 # 2. 데이터 크롤링
 
@@ -70,9 +70,9 @@ driver.get(url)
 
 ```
 
-5개의 장르를 받아오기 위해 딕셔너리로 장르를 지정해 url을 효율적으로 설정할 수 있게했다.
+5개의 장르를 받아오기 위해 장르 딕셔너리를 정의해 효율적으로 url을 설정했다.
 
-## 3️⃣ 받아올 리스트 지정
+## 3️⃣ 데이터 리스트 정의
 
 ```python
 book_titles = list() # 상품명
@@ -82,7 +82,7 @@ keywordPick = list() # 한 도서에 있는 키워드Picks
 book_page_urls = list() # 장르별 1000개의 href를 담고 있음
 ```
 
-## 4️⃣ 어떤 정보? 어떻게?
+## 4️⃣ 웹페이지 크롤링 과정
 
 ### ▶︎ 제목
 
@@ -98,16 +98,16 @@ book_page_urls = list() # 장르별 1000개의 href를 담고 있음
 
 !https://velog.velcdn.com/images/jeo0534/post/e4ca5a79-fd42-4479-b976-2bb8c6239f84/image.png
 
-> ⚠️ 주의할 점은 위의 문법을 가지고 있지 않을 수도 있기 때문에 try-except 구문을 활용한다.
+> ⚠️ 주의할 점 : 위의 문법을 가지고 있지 않을 수도 있기 때문에 try-except 구문을 활용한다.
 > 
 
-## 5️⃣ 크롤링 코드 (수정 전후 코드비교)
+## 5️⃣ 크롤링 코드 (수정 전후 코드 비교)
 
-[🔗 수정하기 전 코드 github](https://github.com/tjdmstj/deep.daiv/blob/main/2%EC%A3%BC%EC%B0%A8/%E1%84%80%E1%85%AD%E1%84%87%E1%85%A9%E1%84%86%E1%85%AE%E1%86%AB%E1%84%80%E1%85%A9%20%E1%84%8F%E1%85%B3%E1%84%85%E1%85%A9%E1%86%AF%E1%84%85%E1%85%B5%E1%86%BC%20%E1%84%8F%E1%85%A9%E1%84%83%E1%85%B3%20%E1%84%87%E1%85%A2%E1%84%91%E1%85%A9%E1%84%8B%E1%85%AD%E1%86%BC(%E1%84%89%E1%85%AE%E1%84%8C%E1%85%A5%E1%86%BC%20%E1%84%8C%E1%85%A5%E1%86%AB).ipynb)
+[🔗 수정 전 코드 github](https://github.com/tjdmstj/deep.daiv/blob/main/2%EC%A3%BC%EC%B0%A8/%E1%84%80%E1%85%AD%E1%84%87%E1%85%A9%E1%84%86%E1%85%AE%E1%86%AB%E1%84%80%E1%85%A9%20%E1%84%8F%E1%85%B3%E1%84%85%E1%85%A9%E1%86%AF%E1%84%85%E1%85%B5%E1%86%BC%20%E1%84%8F%E1%85%A9%E1%84%83%E1%85%B3%20%E1%84%87%E1%85%A2%E1%84%91%E1%85%A9%E1%84%8B%E1%85%AD%E1%86%BC(%E1%84%89%E1%85%AE%E1%84%8C%E1%85%A5%E1%86%BC%20%E1%84%8C%E1%85%A5%E1%86%AB).ipynb)
 
-[🔗 수정 후 코드](https://github.com/tjdmstj/deep.daiv/blob/main/2%EC%A3%BC%EC%B0%A8/%E1%84%80%E1%85%AD%E1%84%87%E1%85%A9%E1%84%86%E1%85%AE%E1%86%AB%E1%84%80%E1%85%A9%20%E1%84%8F%E1%85%B3%E1%84%85%E1%85%A9%E1%86%AF%E1%84%85%E1%85%B5%E1%86%BC%20%E1%84%8F%E1%85%A9%E1%84%83%E1%85%B3%20%E1%84%87%E1%85%A2%E1%84%91%E1%85%A9%E1%84%8B%E1%85%AD%E1%86%BC.ipynb)
+[🔗 수정 후 코드](https://github.com/tjdmstj/deep.daiv/blob/main/2%EC%A3%BC%EC%B0%A8/%E1%84%80%E1%85%AD%E1%84%87%E1%85%A9%E1%84%86%E1%85%AE%E1%86%AB%E1%84%80%E1%85%A9%20%E1%84%8F%E1%85%B3%E1%84%85%E1%85%A9%E1%86%AF%E1%84%85%E1%85%B5%E1%86%BC%20%E1%84%8F%E1%85%A9%E1%84%83%E1%85%B3%20%E1%84%87%E1%85%A2%E1%84%91%E1%85%A9%E1%84%8B%E1%85%AD%E1%86%BC.ipynb) [github](https://github.com/tjdmstj/deep.daiv/blob/main/2%EC%A3%BC%EC%B0%A8/%E1%84%80%E1%85%AD%E1%84%87%E1%85%A9%E1%84%86%E1%85%AE%E1%86%AB%E1%84%80%E1%85%A9%20%E1%84%8F%E1%85%B3%E1%84%85%E1%85%A9%E1%86%AF%E1%84%85%E1%85%B5%E1%86%BC%20%E1%84%8F%E1%85%A9%E1%84%83%E1%85%B3%20%E1%84%87%E1%85%A2%E1%84%91%E1%85%A9%E1%84%8B%E1%85%AD%E1%86%BC(%E1%84%89%E1%85%AE%E1%84%8C%E1%85%A5%E1%86%BC%20%E1%84%8C%E1%85%A5%E1%86%AB).ipynb)
 
-### 어떤 점이 달라졌을까?
+어떤 점이 달라졌을까?
 
 ```python
 # 수정 전
@@ -143,7 +143,7 @@ for page in range(1,51):
 
 ▶︎ 수정 전에는 베스트셀러 페이지에 존재하는 책들을 1위부터 1000위까지 들어갔다 나왔다 하는 방법을 사용하여 정보를 수집하였다.
 
-▶︎ driver.back()을 사용하면 이전 페이지로 돌아가는데, 이 경우 이전 페이지가 아닌 다른 페이지로 이동하는 문제점이 발생함! -> 때문에 방법을 변경하고자 함
+▶︎ driver.back()을 사용하면 이전 페이지로 돌아가는데, 이 경우 이전 페이지가 아닌 다른 페이지로 이동하는 문제점이 발생했다. →  크롤링 방법을 수정한다.
 
 ```python
 # 수정 후
@@ -188,35 +188,43 @@ for url in book_page_urls:
 driver.quit()
 ```
 
-▶︎ 먼저 1위부터 1000위까지 모든 도서들의 href정보를 가져와 list로 저장한다.이후 반복문을 통해 list에 존재한 링크를 driver.get(url)을 통해 들어가 정보를 수집한다.
+▶︎ 먼저 1위부터 1000위까지 모든 도서들의 href정보를 가져와 list로 저장한다. 이후 반복문을 통해 list에 존재한 링크를 driver.get(url)을 통해 들어가 정보를 수집한다.
 
 👉🏻 **get_attribute('href')**을 이용하여 href 속성을 추출할 수 있다.
 
 ---
 
-## 🚨 ERROR Check
+🚨 **ERROR Check**
 
-`NoSuchElementException`  : 페이지를 렌더링 하기 전에 특정 요소를 찾으려 했기 때문에 발생 → 아직 웹 페이지가 준비가 되지 않았는데 정보를 긁어오려 했기 때문에 발생
+`NoSuchElementException`  : 페이지를 렌더링 하기 전에 특정 요소를 찾으려 했기 때문에 발생
 
-👉🏻 time.sleep(5)과 같이 페이지가 로딩이 완료 될때까지 기다려 준다면 해결할 수 있다!
+ = 아직 웹 페이지가 준비가 되지 않았는데 정보를 긁어오려 했기 때문에 발생하는 에러
+
+👉🏻 time.sleep(5)과 같이 페이지가 로딩이 완료 될때까지 기다려 준다면 해결할 수 있다.
 
 ( 참고 : [https://yeko90.tistory.com/entry/파이썬-기초-NoSuchElementException-ElementNotVisibleException-에러-해결-방법](https://yeko90.tistory.com/entry/%ED%8C%8C%EC%9D%B4%EC%8D%AC-%EA%B8%B0%EC%B4%88-NoSuchElementException-ElementNotVisibleException-%EC%97%90%EB%9F%AC-%ED%95%B4%EA%B2%B0-%EB%B0%A9%EB%B2%95) )
 
+---
+
 # 3. 데이터 전처리 및 EDA
 
-### ▶︎ 크롤링 데이터 원본
+### ✅ 크롤링 데이터 원본
 
 - 소설, 인문, 자기계발. 경제/경영 4가지 장르별로 1000권
 - 칼럼명 = [’상품명’, ‘책소개’, ‘키워드’]
-- 자기계발 장르 크롤링 데이터 Dataframe 예시
+
+자기계발 장르 크롤링 데이터 Dataframe 예시
 
 ![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/76853085-9779-4145-bd77-6c4480611532/Untitled.png)
+
+> ⚠️ 교보문고 베스트셀러 목록은 날짜가 넘어가면서 갱신된다. ‘시/에세이’ 영역의 경우 크롤링 과정에서 24시가 넘어가면서 정보가 부정확해지고, 결측치가 다수 발생하는 문제가 생겼다. 이에 따라 기존엔 5가지 장르에 대한 데이터를 수집하려 했으나,  ‘시/에세이’ 장르를 제외하여 4가지 장르로 줄여 분석을 진행했다.
+> 
 
 ## 1️⃣ 데이터 전처리
 
 ### ▶︎ 결측치 처리
 
-> ‘책소개’와 ‘키워드’ 칼럼에서 결측치가 존재하는 도서를 제거
+> ‘책소개’와 ‘키워드’ 칼럼에서 결측치가 존재하는 도서를 제거한다.
 > 
 
 ### ▶︎중복 데이터 처리
@@ -237,14 +245,15 @@ driver.quit()
 
 ## 2️⃣ ‘책소개 키워드’ 추출
 
-- '키워드'의 경우 교보문고에서  제공하는 데이터로, 책의 특징을 키워드로 표현한 것이다. 따라서 책의 줄거리나 작가 특성 등의 정보와 관련된 키워드를 추가적으로 확보해 기존 '키워드' 기반 추천을 보완하고자 한다.
-- 글 형태로 되어있는 '책소개' 텍스트에서 키워드를 추출해 추천시스템에 사용한다. 키워드를 추출하는 방법을 크게 한글 형태소 분석기 Okt를 사용하는 방법과 KR-WordRank를 사용하는 방법 2가지로 시도했으며, 2번째 방법의 키워드 추출 결과를 최종 모델링에 활용했다.
+: '키워드'의 경우 교보문고에서  제공하는 데이터로, 책의 특징을 키워드로 표현한 것이다. 따라서 책의 줄거리나 작가 특성 등의 정보와 관련된 키워드를 추가적으로 확보해 기존 '키워드' 기반 추천을 보완하고자 한다.
+
+ 글 형태로 되어있는 '책소개' 텍스트에서 키워드를 추출해 추천시스템에 사용한다. 키워드를 추출하는 방법을 크게 한글 형태소 분석기 Okt를 사용하는 방법과 KR-WordRank를 사용하는 방법 2가지로 시도했으며, 2번째 방법의 키워드 추출 결과를 최종 모델링에 활용했다.
 
 ### ▶︎ 한글 형태소 분석기 Okt
 
-: KoNLPy(코엔엘파이) python 패키지를 통해 한국어 형태소 분석기를 import할 수 있다.
+: `KoNLPy` python 패키지를 통해 한국어 형태소 분석기를 import할 수 있다.
 
-- KoNLPy 제공 한국어 형태소 분석기 5가지
+- `KoNLPy` 제공 한국어 형태소 분석기 5가지
     - Okt(Open Korea Text)
     - Komoran(코모란)
     - Hannanum(한나눔)
@@ -252,21 +261,21 @@ driver.quit()
     - Mecab (Mecab은 윈도우에서 작동이 불가능)
 - 형태소 분석기 method
     
-    > .nouns : 명사 기준 추출
+    > `.nouns` : 명사 기준 추출
     > 
     > 
-    > .phrases : 어절 기준 추출
+    > `.phrases` : 어절 기준 추출
     > 
-    > .pos : 품사를 함께 태깅해서 추출
+    > `.pos` : 품사를 함께 태깅해서 추출
     > 
-    > .morphs : 형태소 단위로 추출
+    > `.morphs` : 형태소 단위로 추출
     > 
     
 
 본 프로젝트에서는 가장 성능이 좋다고 알려진 Okt를 사용한다.
 
-- '책소개' 텍스트에 Okt의 .pos method를 적용하여 (단어, 품사) 리스트를 추출한 후 'None'만 추출하는 함수를 정의한다.
-- 정의한 함수를 사용해 명사 키워드를 추출하고, 이를 기존 Dataframe에서 '책소개 키워드'열로 추가한다.
+- '책소개' 텍스트에 `Okt`의 `.pos` method를 적용하여 (단어, 품사) 리스트를 추출한 후 'None'만 추출하는 함수를 정의한다.
+- 정의한 함수를 사용해 명사 키워드를 추출하고, 이를 기존 Dataframe에서 '책소개 키워드' 열로 추가한다.
 
 ```python
 from konlpy.tag import Okt
@@ -297,7 +306,7 @@ df_new = pd.concat([df, pd.DataFrame({'책소개 키워드':extracted_key})], ax
 
 : 한국어의 특징을 반영하여 비지도학습 기반으로 한국어의 단어를 추출하며 토크나이저를 이용하지 않으면서도 단어/키워드 추출을 수행한다.
 
-▶︎  df['책소개']는 **‘\n’**을 포함하여 하나의 문장으로 이루어져 있기 때문에 이를 기준으로 여려개의 문장으로 나눠야 한다.
+- df['책소개']는 **‘\n’**을 포함하여 하나의 문장으로 이루어져 있기 때문에 이를 여러 개의 문장으로 나눠야 한다.
 
 ```python
 for text in df['책소개']:
@@ -309,9 +318,10 @@ text_list[:2]
 
 ![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/0765ea10-fe08-452b-8cf9-40625e070fd4/Untitled.png)
 
-▶︎  normalize 함수를 이용하여 **불필요한 특수 기호를 제거**해야한다.
-
-ex) ‘▶︎', ’!’, ‘★’ 등…
+- normalize 함수를 이용하여 **불필요한 특수 기호를 제거한다**.
+    
+    ex) ‘▶︎', ’!’, ‘★’ 등…
+    
 
 ```python
 from krwordrank.hangle import normalize
@@ -321,9 +331,8 @@ texts[:2]
 
 ![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/26331833-8c96-4b1f-bbb2-4bfc123b8ea7/Untitled.png)
 
-▶︎ texts를 df에 **책소개 전처리**라는 열(column)이름으로 추가한다.
-
-▶︎ `KRWordRank` 패키지를 이용하여 df[’책소개 전처리’] 내에서 중요한 키워드를 추출한다.
+- texts를 df에 ‘**책소개 전처리’**라는 열(column)이름으로 추가한다.
+- `KRWordRank` 패키지를 이용하여 ’책소개 전처리’ 열에서 중요한 키워드를 추출하고, 이를 기존 Dataframe에서 '책소개 키워드 수정본' 열로 추가한다.
 
 ```python
 from krwordrank.word import KRWordRank
@@ -359,10 +368,17 @@ def KeyWord(x):
       keyword_list.append(word)
   return keyword_list
 
-df['책소개 키워드 수정본'] = df['책소개 키워드'].apply(KeyWord)
+df['책소개 키워드 수정본'] = df['책소개 키워드'].apply(KeyWord)![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/cfdd3f1b-f626-47ca-b8fc-c4271a4b7925/Untitled.png)
 ```
 
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/573495e6-a341-4643-8097-47c16eaacced/Untitled.png)
+### ✅ 최종 Dataframe
+
+[ ✅ 크롤링 데이터 원본](https://www.notion.so/be01bf9bc0b04354a6d5ce4c3aa6350b?pvs=21)
+
+- 결측치와 중복값 제거, 키워드에 장르명 추가
+- ‘책소개 키워드’, ‘책소개 전처리’, ‘책소개 키워드 수정본’ 열 추가
+
+![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/199473c0-fb62-43cc-910f-3dc4cf1e06d9/Untitled.png)
 
 ## 3️⃣ 워드 클라우드 시각화
 
@@ -445,34 +461,43 @@ df['책소개 키워드 수정본'] = df['책소개 키워드'].apply(KeyWord)
 
 ![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/a70b3061-405e-4661-9b84-6a52c45e76e2/Untitled.png)
 
-‘책소개’ 텍스트에서 추출한 키워드의 경우 ‘것’, ‘하는’, ‘있다’, ‘저자’와 같이 대부분의 책소개 텍스트에 들어가 있는 일반적인 단어가 많이 추출되었음을 확인할 수 있다. 이에 따라 단순히 단어의 등장여부나 횟수가 아닌 특정 문서에서 특정 단어의 중요도 값을 기준으로 하는 TF-IDF 기반 추천시스템이 더욱 적절할 것이라고 예상했다.
+‘책소개’ 텍스트에서 추출한 키워드의 경우 ‘것’, ‘하는’, ‘있다’, ‘저자’와 같이 대부분의 책소개 텍스트에 들어가 있는 일반적인 단어가 많이 추출되었음을 확인할 수 있다. 이에 따라 단순히 단어의 등장 여부나 횟수가 아닌 특정 문서에서 특정 단어의 중요도 값을 기준으로 하는 TF-IDF 기반 추천 시스템이 더욱 적절할 것이라고 예상했다.
 
-## 4️⃣ 추천시스템 구상
+## 4️⃣ 추천 시스템 구상
 
-: 데이터 전처리와 EDA 과정을 기반으로 추천시스템 구현 방법을 구상한다.
+: 데이터 전처리와 EDA 과정을 기반으로 추천 시스템 구현 방법을 구상한다.
 
-▶︎ 구현한 추천시스템 종류
+▶︎ 구현한 추천 시스템 종류
 
-1) 인코딩 기반 추천시스템
+1) 인코딩 기반 추천 시스템
 
-2) TF-IDF 기반 추천시스템
+2) TF-IDF 기반 추천 시스템
 
-3) Word2Vec 기반 추천시스템
+3) Word2Vec 기반 추천 시스템
+
+---
 
 # 4. 인코딩 **기반** 추천시스템
 
+<aside>
+📌 **키워드에서 각 단어의 등장 여부를 1과 0의 값으로 두고 도서를 벡터화
+→ 도서 간 코사인 유사도 계산
+→ 베스트셀러 추천 리스트 작성**
+
+</aside>
+
 ## 1️⃣ 벡터화
 
-: 도서의 키워드에서 각 단어의 등장 여부를 1과 0의 값으로 하여 도서를 벡터화한다. 벡터화 방법으로 `CountVectorizer 클래스`를 이용한 벡터화와 One-hot encoding 함수 정의를 통한 벡터화, 2가지 방법을 시도해보았다.
+: 벡터화 방법으로 `CountVectorizer 클래스`를 이용한 벡터화와 One-hot encoding 함수 정의를 통한 벡터화, 2가지 방법을 시도해보았다.
 
 ### ▶︎ ****CountVectorizer****
 
-: `CountVectorizer`는 `sklearn.feature_extraction`에서 제공하는 문서 벡터화 클래스로, 주어진 문서에 각각의 단어가 몇 번 등장했는지를 count하여 document-term matrix를 만든다.
+: `CountVectorizer`는 `sklearn.feature_extraction`에서 제공하는 문서 벡터화 클래스로, 주어진 문서에 각각의 단어가 몇 번 등장하는지 count하여 document-term matrix(DTM)를 만든다.
 
-- CountVectorizer method
-    - CountVectorizer 객체 fit : 단어 사전을 구축하는 기능, 주어진 문서 속 단어들에 대해 각 단어가 몇 번째 열에 올 것인지 index를 지정한다.
-    - CountVectorizer 객체 transform : 구축한 단어 사전을 기반으로 주어진 문서를 벡터로 변환하는 기능, 단어 사전에 없는 단어가 문서에 포함된 경우 이를 무시해버린다.
-    - fit_transform : 문서 list를 이용해 단어 사전을 구축하고, 각 문서를 벡터화하여 document-term matrix으로 변환한다.
+- `CountVectorizer` method
+    - `.fit` : 단어 사전을 구축하는 기능, 주어진 문서 속 단어들에 대해 각 단어가 몇 번째 열에 올 것인지 index를 지정한다.
+    - `.transform` : 구축한 단어 사전을 기반으로 주어진 문서를 벡터로 변환하는 기능, 단어 사전에 없는 단어가 문서에 포함된 경우 이를 무시해버린다.
+    - `.fit_transform` : 문서 list를 이용해 단어 사전을 구축하고, 각 문서를 벡터화하여 document-term matrix로 변환한다.
 - CountVectorizer는 원래 string에서 각 단어의 빈도수를 세는 기능을 수행하지만, 현재 Dataframe의 경우 키워드 리스트에 각 단어가 중복되어 존재하지 않기 때문에 CountVectorizer를 적용하면 키워드에 존재하는 경우엔 1을, 그렇지 않은 경우엔 0의 값을 가지는 One-hot encoding과 같은 결과의 벡터화를 진행할 수 있다.
 
 ```python
@@ -523,7 +548,7 @@ df_matrix = vectorize(best2, '키워드')
 
 | 사용한 칼럼 | DTM | 유사도 matrix |
 | --- | --- | --- |
-| 책소개 키워드 | book_mat_keyword | cosine_sim |
+| 책소개 키워드 수정본 | book_mat_keyword | cosine_sim |
 | 키워드 | book_mat_keyword_1 | cosine_sim_1 |
 | 상품명 | book_mat_keyword_2 | cosine_sim_2 |
 
@@ -537,10 +562,10 @@ cosine_sim_2 = cosine_similarity(book_mat_keyword_2.toarray())
 
 ## 3️⃣ 유사도 기반 도서 추천
 
-: 세 가지의 코사인 유사도를 활용한 유사 도서 추천시스템을 구현한다.
+: 세 가지의 코사인 유사도를 활용한 유사 도서 추천 시스템을 구현한다.
 
 - 주어진 title에 대하여 코사인 유사도가 높은 순부터 내림차순 정렬한 후 상위 n개를 추출하는 함수를 정의한다.
-- 세 가지의 코사인 유사도에 가중치를 설정하고, 가중합 유사도를 최종 유사도 판단의 기준 값으로 사용했다.
+- 세 가지의 코사인 유사도에 가중치를 설정하고, 가중합 유사도를 최종 유사도 판단의 기준 값으로 사용했다. ([▶︎ 가중치 부여 방법](https://www.notion.so/9a7f47fa5edb47cb85f247b7890c3842?pvs=21) 구체적인 설명)
 
 ```python
 # 유사도 가중치 적용
@@ -577,7 +602,16 @@ find_sim_book(best, sim, query_index, top_k)
 
 ![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/8cc4cb0a-c165-4ec7-90c9-68d191fa1fb9/Untitled.png)
 
+---
+
 # 5. TF-IDF **기반** 추천시스템
+
+<aside>
+📌 **각 키워드의 TF-IDF 값으로 도서를 벡터화
+→ 도서 간 코사인 유사도 계산
+→ 베스트셀러 추천 리스트 작성**
+
+</aside>
 
 ## ▶︎ TF-IDF(Term Frequency-Inverse Document Frequency)
 
@@ -587,15 +621,15 @@ find_sim_book(best, sim, query_index, top_k)
 
 - `TF(w)` : 특정 단어 w가 특정 문서 d에 나온 빈도
 - `DF(w)` : 특정 단어 w가 나타난 문서의 수👉🏻 여러문장에 쓰이는 번용적인 단어
-- `IDF(w)` : 전체 문서 수 N을 해당 단어의 DF로 나눈 뒤 로그를 취한 값👉🏻 모든 문서에 등장하는 단어(DF)의 중요도를 낮춤(1을 더하는 이유는 분모가 0이 되는 것을 방지하기 위함)
+- `IDF(w)` : 전체 문서 수 N을 해당 단어의 DF로 나눈 뒤 로그를 취한 값👉🏻 모든 문서에 등장하는 단어(DF)의 중요도를 낮춘다. (1을 더하는 이유는 분모가 0이 되는 것을 방지하기 위해)
 - `N` : 전체 문서 수
 - `Bag of Word`의 문제점을 보완
     
     > **Bag of Word Embedding**
     > 
     > - 단어의 순서를 고려하지 않고 빈도수로 텍스트를 임베딩하는 방법
-    > - 많이 쓰인 단어가 주제와 관련이 있다고 생각!
-    > - 🚨 문제점 : 영어 text일 경우 'a'와 같은 단어 때문에 예측하기 어렵다는 문제가 있음
+    > - 많이 쓰인 단어가 주제와 관련이 있다고 가정한다.
+    > - 🚨 문제점 : 영어 text일 경우 'a'와 같은 단어 때문에 예측하기 어렵다는 문제가 있다.
     > - BoW 예시
     >     
     >     !https://velog.velcdn.com/images/jeo0534/post/8d35cb3a-3018-43d3-a8b1-03ccd0568b1e/image.png
@@ -605,13 +639,9 @@ find_sim_book(best, sim, query_index, top_k)
     > 
     
 
-사용 Dataframe 예시
-
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/cfdd3f1b-f626-47ca-b8fc-c4271a4b7925/Untitled.png)
-
 ## 1️⃣ 벡터화
 
-sklearn에 내장되어 있는 `TfidfVectorizer`을 이용한다.
+: sklearn에 내장되어 있는 `TfidfVectorizer`을 이용한다.
 
 ```python
 from sklearn.feature_extraction.text import TfidfVectorizer
@@ -632,7 +662,7 @@ tfidf_df
 
 ## 2️⃣ 유사도 측정
 
-`코사인 유사도`를 이용하여 유사도를 구한다.
+: `코사인 유사도`를 이용하여 각 DTM의 유사도 행렬을 계산한다.
 
 ```python
 from sklearn.metrics.pairwise import cosine_similarity
@@ -642,13 +672,13 @@ cosine_sim_1 = cosine_similarity(tfidf_array_1) # 키워드 기반 유사도
 cosine_sim_2 = cosine_similarity(tfidf_array_2) # 상품명 기반 유사도
 ```
 
-▶︎ 유사도 예시( 책소개 키워드 기반 유사도)
+▶︎ 유사도 예시 (’책소개 키워드 수정본’ 기반 유사도)
 
 ![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/534fc1bd-157c-4c0b-a321-5d7b6f7d6d0f/Untitled.png)
 
 ## 3️⃣ 유사도 기반 도서 추천
 
-세 가지의 유사도를 활용하여 하나의 추천시스템을 구축하기 위해 각각의 유사도에 대해 다른 가중치를 부여해 하나의 유사도를 도출했다.
+: 세 가지의 코사인 유사도를 활용한 유사 도서 추천 시스템을 구현한다. 세 가지의 유사도를 동시에 사용하는 하나의 추천 시스템을 구축하기 위해 각각의 유사도에 대해 다른 가중치를 부여해 하나의 유사도로 도출했다.
 
 ▶︎ 가중치 부여 방법
 
@@ -672,7 +702,7 @@ sim
 
 ```python
 query_index = -1 # 상품명 : 성격의 탄생
-top_k = 10
+top_k = 10 # 상위 유사 도서 개수
 
 query_similarity = sim[query_index]
 sorted_indices = np.argsort(query_similarity)[::-1]
@@ -686,25 +716,36 @@ df['상품명'].iloc[sorted_indices[1:top_k +1]]
 
 ![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/f5cf3333-6a73-424a-b399-d964fdd2e178/Untitled.png)
 
+---
+
 # 6.  **Word2Vec 기반** 추천시스템
+
+<aside>
+📌 **Word2Vec 모델로 주어진 단어와 가장 유사한 키워드 리스트 속 단어 추출
+→ 유사 단어들을 키워드로 가장 많이 포함하고 있는 도서 추출
+→ 베스트셀러 추천 리스트 작성**
+
+</aside>
 
 ## ▶︎ '키워드'에 따른 책 추천 Word2Vec 알고리즘
 
-Word2Vec은 원시 텍스트로부터 단어 임베딩을 학습하는 데 특히 계산적으로 효율적인 예측 모델이다. 두 가지 방식으로 제공되는데, 연속적 CBOW 모델과 Skip-Gram 모델이 있다. 본 실습에서는 Skip-Gram 모델로 구현하였다. 
+: Word2Vec은 원시 텍스트로부터 단어 임베딩을 학습하는 데 특히 계산적으로 효율적인 예측 모델이다. 두 가지 방식으로 제공되는데, 연속적 CBOW 모델과 Skip-Gram 모델이 있다.
 
 - **CBOW 모델: 주변 단어들을 이용해 대상 단어를 예측**
-
-CBOW는 주변 문맥 단어들(예: '고양이가 앉아 있는')로부터 대상 단어(예: '매트')를 예측한다. 통계적으로 CBOW는 분포를 매끄럽게 처리하는 효과가 있으며(전체 문맥을 하나의 관찰 결과로 취급), 작은 데이터셋에 유용하다.
+: CBOW는 주변 문맥 단어들(예: '고양이가 앉아 있는')로부터 대상 단어(예: '매트')를 예측한다. 통계적으로 CBOW는 분포를 매끄럽게 처리하는 효과가 있으며(전체 문맥을 하나의 관찰 결과로 취급), 작은 데이터 셋에 유용하다.
 
 - **Skip-Gram 모델: 대상 단어를 이용해 주변 단어들을 예측
+: S**kip-Gram은 대상 단어로부터 주변 문맥 단어를 예측한다(CBOW의 역). 통계적으로 Skip-Gram은 각 문맥-대상 쌍을 새로운 관찰로 취급하며, 이는 대규모 데이터 셋에서 더 나은 결과를 보인다.
 
-S**kip-Gram은 대상 단어로부터 주변 문맥 단어를 예측한다(CBOW의 역). 통계적으로 Skip-Gram은 각 문맥-대상 쌍을 새로운 관찰로 취급하며, 이는 대규모 데이터셋에서 더 나은 결과를 보인다.
+🔗 출처 : [Skip-gram and CBOW](https://towardsdatascience.com/nlp-101-word2vec-skip-gram-and-cbow-93512ee24314) 
 
 ![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/6c291490-28c7-4bd3-8fe0-67054cebe982/Untitled.png)
 
-본 실습에서는 [gensim](https://radimrehurek.com/gensim/)이라는 라이브러리를 이용한다. `gensim`은 자연어를 벡터로 변환하는데 필요한 대부분의 편의 기능을 제공해주고 있는 대표적인 라이브러리이다. 
+ 본 실습에서는 Skip-Gram 모델로 구현하였으며, [gensim](https://radimrehurek.com/gensim/)이라는 라이브러리를 이용했다. `gensim`은 자연어를 벡터로 변환하는데 필요한 대부분의 편의 기능을 제공해주는 대표적인 라이브러리이다. 
 
 ## 1️⃣ 문자열 리스트화
+
+: Word2Vec로 학습하기 위해선 문자열을 리스트로 바꿔야한다.  이에 따라 기존 Dataframe의 ‘키워드’ 열에 대하여 각 행별로 리스트화를 진행하였다.
 
 ```python
 import ast
@@ -715,11 +756,11 @@ for keywordin df['키워드']:
 text.append(keyword_list)
 ```
 
-기존 데이터 프레임의 ‘키워드’ 컬럼을 각 행별로 리스트화를 진행하였다. Word2Vec로 학습시키기 위해선 문자열을 리스트로 바꿔야한다. 
-
 ## 2️⃣ Word2Vec 모델 학습
 
-*실험 키워드로 ‘경제’를 입력하였다.
+: 단어를 입력하면 해당 단어 가장 유사한 ‘키워드’ 속 단어를 순서대로 출력해주는 모델을 생성한다.
+
+⚠️ 실험 키워드로 ‘경제’를 입력하였다.
 
 ```python
 from gensim.models.word2vec import Word2Vec
@@ -732,17 +773,22 @@ model.wv.most_similar("경제", topn = 10) #키워드 입력
 - `sg`: 학습 알고리즘을 선택하는 인자이다. `sg=0`일 경우, CBOW(Co ntinuous Bag of Words) 알고리즘을 사용하고, `sg=1`일 경우, Skip-gram 알고리즘을 사용한다. 이 실습에서는 `sg=1`로 설정되어 있어 Skip-gram 알고리즘이 사용된다.
 - `window`: 목표 단어와 주변 단어 사이의 최대 거리를 나타내는 인자이다. `window=2`의 경우, 목표 단어 앞뒤로 두 개의 단어를 고려하여 학습한다.
 - `min_count`: 모델 학습에 포함시킬 단어의 최소 빈도수를 설정하는 인자이다. 이 예제에서는 단어가 최소 3번 이상 등장해야 학습에 포함된다.
+
 - **`model.init_sims(replace = True)`: 모델의 단어 벡터를 정규화하여 메모리 효율성을 높인다. 이 과정은 모델 학습이 완료된 후에 실행되며, 모델의 크기를 줄이는 데 도움이 된다.**
+
+🔗 출처 : [Word2vec 예제](https://medium.com/@zafaralibagh6/a-simple-word2vec-tutorial-61e64e38a6a1) 
 
 ![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/17342e6e-f04b-462d-b8b1-349df4193bb4/Untitled.png)
 
-### 출력결과
+### 출력 결과
 
 ![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/75e9769a-3c93-4c4c-a867-6567ffada90d/Untitled.png)
 
-대락 비슷한 값들이 나왔다. 사랑이나 미스터리 같이 큰 관계가 없는 단어도 출력되었다.
+‘경제’ 키워드 입력 시 출력해주는 유사 단어 상위 10개이다. ‘경제’와 비슷한 ‘부자’, ‘경제경영’ 등의 단어도 있었고, ‘사랑’이나 ‘미스터리’ 같이 큰 관계가 없는 단어도 출력되었다.
 
 ## 3️⃣ **상위 연관키워드를 포함하는 상위 10개 책 출력**
+
+: 위에서 학습한 Word2Vec 모델을 확장하여, 해당 모델이 제시하는 상위 연관 키워드들을 가장 많이 포함하는 상위 10개의 책을 추천하는 추천 시스템을 구현한다.
 
 ```python
 # 연관 단어 목록  
@@ -759,31 +805,105 @@ for idx, row in top_products.iterrows():
     print(row['상품명'])
 ```
 
-이전에 진행한 모델학습과정에서 확장하여 상위 연관키워드들을 가장 많이 포함하는 상위 10개의 책을 추천하였다. 
+### 출력 결과
 
-![스크린샷 2023-08-09 오후 9.26.20.png](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/fb9f204e-f64f-4df5-aa46-24e8f85da937/%E1%84%89%E1%85%B3%E1%84%8F%E1%85%B3%E1%84%85%E1%85%B5%E1%86%AB%E1%84%89%E1%85%A3%E1%86%BA_2023-08-09_%E1%84%8B%E1%85%A9%E1%84%92%E1%85%AE_9.26.20.png)
+![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/eab92d0f-3240-44c3-a27b-79def6bee957/Untitled.png)
+
+앞서 확인한 ‘경제’ 키워드 입력 시 출력해주는 유사 단어들을 가장 많이 포함하는 상위 10개의 책을 추천하였다. 
+
+---
 
 # 7.  **프로젝트 결과**
 
+### ▶︎데이터
+
+- 교보문고  [소설, 인문, 자기계발, 경제/경영] 4가지 장르의 베스트셀러 3713권 도서
+- 교보문고 웹페이지 크롤링 : `키워드Pick`과 `책 소개` 데이터 수집
+- 키워드 추출을 통해 `책 소개` 에서 ‘책소개 키워드’ 추출
+- [✅ 최종 Dataframe](https://www.notion.so/Dataframe-fea5a5e43b6843cd9e2d8ee9fc98581d?pvs=21)
+
+### ▶︎ 추천 시스템 모델링
+
+**인코딩 기반 추천시스템**
+
+<aside>
+📌 **키워드에서 각 단어의 등장 여부를 1과 0의 값으로 두고 도서를 벡터화
+→ 도서 간 코사인 유사도 계산
+→ 베스트셀러 추천 리스트 작성**
+
+</aside>
+
+**TF-IDF 기반 추천시스템**
+
+<aside>
+📌 **각 키워드의 TF-IDF 값으로 도서를 벡터화
+→ 도서 간 코사인 유사도 계산
+→ 베스트셀러 추천 리스트 작성**
+
+</aside>
+
+**Word2Vec 기반 추천시스템**
+
+<aside>
+📌 **Word2Vec 모델로 주어진 단어와 가장 유사한 키워드 리스트 속 단어 추출
+→ 유사 단어들을 키워드로 가장 많이 포함하고 있는 도서 추출
+→ 베스트셀러 추천 리스트 작성**
+
+</aside>
+
 ## ✅ 추천 결과 비교
 
-입력한 도서와 유사한 도서 10권 추천
-
-- 예 1 : 도서명 ‘부자의 그릇’
+(예 1) 도서명 ‘부자의 그릇’
 
 ![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/e4e29d5a-6b97-4bde-b71b-000cf3d9bcf8/Untitled.png)
 
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/602ff69f-09b2-45cb-a0b9-d8221032c24c/Untitled.png)
+- ‘부자의 그릇’과 유사한 상위 10권의 도서 추천 리스트
 
-            인코딩 기반 추천시스템        |        TF-IDF 기반 추천시스템
+                          인코딩 기반 추천시스템          |          TF-IDF 기반 추천시스템
 
-- 예 2 : 도서명 ‘어린 왕자(Le Petit Prince)(교보문고 특별판)’
+![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/8ad44336-8841-4d5c-bca6-c04a85f45427/Untitled.png)
+
+- ‘부자되는법’ 키워드 관련 상위 키워드 10개, 10권의 도서 추천 리스트
+
+       Word2Vec 기반 추천시스템
+
+![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/88c1684b-592f-4da9-812a-105c222c4f9a/Untitled.png)
+
+(예 2) 도서명 ‘위기의 역사’
+
+![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/97504960-053b-4f29-bf3d-b6a55e99c1cc/Untitled.png)
+
+- ‘위기의 역사’와 유사한 상위 10권의 도서 추천 리스트
+
+                          인코딩 기반 추천시스템          |          TF-IDF 기반 추천시스템
+
+![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/02eed931-d926-4fa2-9908-ed4096f20628/Untitled.png)
+
+- ‘금리’ 키워드 관련 상위 키워드 10개, 10권의 도서 추천 리스트
+
+       Word2Vec 기반 추천시스템
+
+![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/94a55d48-a5c3-442d-8680-0b46e45190a5/Untitled.png)
+
+(예 3) 도서명 ‘어린 왕자(Le Petit Prince)(교보문고 특별판)’
 
 ![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/f8faf17d-79f8-4587-8d47-9962e8e703db/Untitled.png)
 
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/5eac39a1-d217-4f39-a914-fd675d934dc8/Untitled.png)
+- ‘어린 왕자(Le Petit Prince)(교보문고 특별판)’과 유사한 상위 10권의 도서 추천 리스트
 
              인코딩 기반 추천시스템        |        TF-IDF 기반 추천시스템
+
+![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/82967e2e-8626-4da4-859c-3ae516e769a1/Untitled.png)
+
+(예 4) 도서명 ‘죽고 싶은 사람은 없다’
+
+![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/e36c1ea0-62c5-493f-88fe-2249ad51c450/Untitled.png)
+
+- ‘죽고 싶은 사람은 없다’와 유사한 상위 10권의 도서 추천 리스트
+
+             인코딩 기반 추천시스템        |        TF-IDF 기반 추천시스템
+
+![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/0c6081ae-3a26-474b-b9ee-4638a2b33c14/Untitled.png)
 
 ## 🚨 한계 및 개선 방안
 
@@ -791,28 +911,28 @@ for idx, row in top_products.iterrows():
 
 문제점 : 고유 번호, 출판사, 작가 등 도서를 구별할 수 있는 정보가 충분하지 않아 동일한 제목의 도서들이 존재하는 경우가 있었다.
 
-→ 개선 방안 : 도서의 고유 번호, 출판사, 작가 등과 같이 책을 구별할 수 있는 정보를 원본 데이터에 추가한다. 나아가 도서의 판매 페이지나 링크도 포함한다면, 추천 리스트를 제시할 때 함께 보여줌으로써 해당 도서가 무엇인지 바로 확인할 수 있도록 구현할 수 있을 것이다.
+👉🏻 개선 방안 : 도서의 고유 번호, 출판사, 작가 등과 같이 책을 구별할 수 있는 정보를 원본 데이터에 추가한다. 나아가 도서의 판매 페이지나 링크도 포함한다면, 추천 리스트를 제시할 때 함께 보여줌으로써 해당 도서가 무엇인지 바로 확인할 수 있도록 구현할 수 있을 것이다.
 
 1. **도서 종류의 한계**
 
 문제점 : 현재는 4가지 분야에 대해서, 베스트셀러 도서에 대해서만 추천 시스템을 적용할 수 있는 상태이다.
 
-→ 개선 방안 : 더 많은 분야와 도서에 대해 도서 DB를 확장한다면 더 활용도 높은 도서 추천 서비스를 제공할 수 있을 것으로 기대된다.
+👉🏻 개선 방안 : 더 많은 분야와 도서에 대해 도서 DB를 확장한다면 더 활용도 높은 도서 추천 서비스를 제공할 수 있을 것으로 기대된다.
 
 1. **‘책소개’ 키워드 추출**
 
 문제점 : ‘책소개’ 텍스트에서 키워드를 추출하기 위해 2가지 방법을 사용했다. 하지만 첫 번째 방법의 경우 토큰화가 부정확해지는 문제가, 두 번째 방법의 경우 어떤 책이든 적용될 수 있는 너무 일반적인 단어들이 주요 키워드로 나온다는 문제가 존재했다.
 
-→ 개선 방안 : 단순히 단어를 추출하는 것이 아닌, 해당 문서에서 중요한 키워드만 추출하는 방식으로 개선한다면 ‘책소개 키워드’가 추천 시스템의 정확성을 더 높일 수 있을 것이라 생각된다.
+👉🏻 개선 방안 : 단순히 단어를 추출하는 것이 아닌, 해당 문서에서 중요한 키워드만 추출하는 방식으로 개선한다면 ‘책소개 키워드’가 추천 시스템의 정확성을 더 높일 수 있을 것이라 생각된다.
 
 1. **유사도 가중치 결정의 어려움**
 
 문제점 : 인코딩 기반과 TF-IDF 기반 추천시스템의 경우 3가지 유사도 값의 가중합을 최종 유사도 판단 기준으로 활용했다. 이때 가장 적절한 가중치를 찾기 위한 과정을 엄밀하게 진행하지 못했다는 문제점이 있다.
 
-→ 개선 방안 : Cross Validation이나 Grid Search와 같이 최적의 가중치 비율을 정하기 위한 과정을 진행한다면 개선할 수 있을 것이라 생각했다. 추천시스템에서는 파라미터 튜닝을 어떻게 진행할 수 있는지에 대한 추가적인 학습이 필요하다.
+👉🏻 개선 방안 : Cross Validation이나 Grid Search와 같이 최적의 가중치 비율을 정하기 위한 과정을 진행한다면 개선할 수 있을 것이라 생각했다. 추천시스템에서는 파라미터 튜닝을 어떻게 진행할 수 있는지에 대한 추가적인 학습이 필요하다.
 
 1. **Word2Vec 알고리즘에 대한 이해**
 
 문제점 : Word2Vec 알고리즘은 단어 주변의 문맥 정보를 중요하게 생각하기 때문에 순서가 굉장히 중요하다. 하지만 알고리즘을 제대로 공부하지 않고 구현했기 때문에 키워드가 무작위로 배열된 피처를 가지고 학습을 진행하였다. 그렇기 때문에 다른 키워드를 입력했을 땐 엉뚱한 결과 값이 나올 때도 많았다. 따라서 위 실습에서 입력 키워드와 비슷한 도서들이 추천된 사유는 (무작위로 배치된)주변 맥락에 관련 정보가 많아서 그저 운이 좋았던 **잘못된** 결과였던 것이다. 
 
-→ 개선 방안 : 형태소 분석을 한 다음 불용어를 제거 하였을 때 단어들의 순서는 그대로 유지해야한다. 앞 뒤 단어의 맥락 정보가 굉장히 중요하기 때문에 순서를 바꾸면 모델이 제대로 학습을 하지 못한다. 추후 알고리즘 구현에 있어선 꼭 확인해야할 부분이다. 따라서 이번 실습에선 해당 모델을 구현해 본 것과 해당 모델이 제대로 학습되기 위해선 어떤 조건을 만족해야 하는지 배울 수 있었던 것에 의의를 둔다.
+👉🏻 개선 방안 : 형태소 분석을 한 다음 불용어를 제거 하였을 때 단어들의 순서는 그대로 유지해야한다. 앞 뒤 단어의 맥락 정보가 굉장히 중요하기 때문에 순서를 바꾸면 모델이 제대로 학습을 하지 못한다. 추후 알고리즘 구현에 있어선 꼭 확인해야 할 부분이다. 따라서 이번 실습에선 해당 모델을 구현해 본 것과 해당 모델이 제대로 학습되기 위해선 어떤 조건을 만족해야 하는지 배울 수 있었던 것에 의의를 둔다.
