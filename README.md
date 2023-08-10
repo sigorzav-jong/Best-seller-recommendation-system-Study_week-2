@@ -1,4 +1,9 @@
-# 교보문고 베스트셀러 추천 시스템 구현
+
+https://www.notion.so/deepdaiv/5e9a50cbaf7c4009b4ccea3b81428627?pvs=4
+
+
+
+# 교보문고 베스트셀러 추천 시스템
 
 ---
 
@@ -373,7 +378,7 @@ df['책소개 키워드 수정본'] = df['책소개 키워드'].apply(KeyWord)![
 
 ### ✅ 최종 Dataframe
 
-[ ✅ 크롤링 데이터 원본](https://www.notion.so/be01bf9bc0b04354a6d5ce4c3aa6350b?pvs=21)
+[ ✅ 크롤링 데이터 원본](https://www.notion.so/7113a0cca6604cb38963b008b7753fd5?pvs=21)
 
 - 결측치와 중복값 제거, 키워드에 장르명 추가
 - ‘책소개 키워드’, ‘책소개 전처리’, ‘책소개 키워드 수정본’ 열 추가
@@ -526,7 +531,7 @@ for i in range(len(best2['키워드'])):
 word_dic = list(set(word))
 
 # One-hot encoding 수행하는 함수 정의
-def vectorize(df, col):
+def vectorize(df, col, word_dic):
     df_matrix = pd.DataFrame()
 
     for i in range(df.shape[0]):
@@ -534,10 +539,11 @@ def vectorize(df, col):
         for voca in word_dic:
             tmp.append(df.loc[i, col].count(voca))
         df_matrix = pd.concat([df_matrix,  pd.DataFrame(tmp).T])
+        #df_matrix.append(tmp)
     return df_matrix
 
 # One-hot encoding 수행
-df_matrix = vectorize(best2, '키워드')
+df_matrix = vectorize(best2, '키워드', word_dic)
 ```
 
 - One-hot encoding은 범주가 너무 넓거나 복잡하면 매우 sparse한 형태의 고차원 벡터로 표현되기 때문에 메모리 낭비 및 계산 복잡도가 커지는 단점이 있다. 실제 분석 과정에서 One-hot encoding을 이용한 벡터화 과정이 가장 오랜 시간이 소요되었다.
@@ -565,7 +571,7 @@ cosine_sim_2 = cosine_similarity(book_mat_keyword_2.toarray())
 : 세 가지의 코사인 유사도를 활용한 유사 도서 추천 시스템을 구현한다.
 
 - 주어진 title에 대하여 코사인 유사도가 높은 순부터 내림차순 정렬한 후 상위 n개를 추출하는 함수를 정의한다.
-- 세 가지의 코사인 유사도에 가중치를 설정하고, 가중합 유사도를 최종 유사도 판단의 기준 값으로 사용했다. ([▶︎ 가중치 부여 방법](https://www.notion.so/9a7f47fa5edb47cb85f247b7890c3842?pvs=21) 구체적인 설명)
+- 세 가지의 코사인 유사도에 가중치를 설정하고, 가중합 유사도를 최종 유사도 판단의 기준 값으로 사용했다. ([▶︎ 가중치 부여 방법](https://www.notion.so/cef095f98b884ba58256222b16a683cd?pvs=21) 구체적인 설명)
 
 ```python
 # 유사도 가중치 적용
@@ -596,11 +602,11 @@ find_sim_book(best, sim, query_index, top_k)
 
 ****CountVectorizer를 이용한 경우 추천 결과****
 
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/b24a6274-0782-4a4f-99b2-71fee2ba4062/Untitled.png)
+![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/f810c99d-29c9-4b4e-be60-653810c8f900/Untitled.png)
 
 **One-hot encoding을 이용한 경우 추천 결과**
 
-![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/8cc4cb0a-c165-4ec7-90c9-68d191fa1fb9/Untitled.png)
+![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/3370d3b5-1994-4b89-9215-ccb48c953bb2/Untitled.png)
 
 ---
 
@@ -620,7 +626,7 @@ find_sim_book(best, sim, query_index, top_k)
 !https://velog.velcdn.com/images/jeo0534/post/35740498-fb31-47bc-a928-470cad6d64e4/image.png
 
 - `TF(w)` : 특정 단어 w가 특정 문서 d에 나온 빈도
-- `DF(w)` : 특정 단어 w가 나타난 문서의 수👉🏻 여러문장에 쓰이는 번용적인 단어
+- `DF(w)` : 특정 단어 w가 나타난 문서의 수👉🏻 여러문장에 쓰이는 범용적인 단어
 - `IDF(w)` : 전체 문서 수 N을 해당 단어의 DF로 나눈 뒤 로그를 취한 값👉🏻 모든 문서에 등장하는 단어(DF)의 중요도를 낮춘다. (1을 더하는 이유는 분모가 0이 되는 것을 방지하기 위해)
 - `N` : 전체 문서 수
 - `Bag of Word`의 문제점을 보완
@@ -741,7 +747,7 @@ df['상품명'].iloc[sorted_indices[1:top_k +1]]
 
 ![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/6c291490-28c7-4bd3-8fe0-67054cebe982/Untitled.png)
 
- 본 실습에서는 Skip-Gram 모델로 구현하였으며, [gensim](https://radimrehurek.com/gensim/)이라는 라이브러리를 이용했다. `gensim`은 자연어를 벡터로 변환하는데 필요한 대부분의 편의 기능을 제공해주는 대표적인 라이브러리이다. 
+ 본 프로젝트에서는 Skip-Gram 모델로 구현하였으며, [gensim](https://radimrehurek.com/gensim/)이라는 라이브러리를 이용했다. `gensim`은 자연어를 벡터로 변환하는데 필요한 대부분의 편의 기능을 제공해주는 대표적인 라이브러리이다. 
 
 ## 1️⃣ 문자열 리스트화
 
@@ -811,6 +817,8 @@ for idx, row in top_products.iterrows():
 
 앞서 확인한 ‘경제’ 키워드 입력 시 출력해주는 유사 단어들을 가장 많이 포함하는 상위 10개의 책을 추천하였다. 
 
+(피드백)**‘책소개’ 관련해서 이 부분에서는 Word2Vec 이 적절하지 않을 수 있음. 노이즈가 너무 많음. (Ex. 베스트셀러 선정 등등)**
+
 ---
 
 # 7.  **프로젝트 결과**
@@ -820,7 +828,7 @@ for idx, row in top_products.iterrows():
 - 교보문고  [소설, 인문, 자기계발, 경제/경영] 4가지 장르의 베스트셀러 3713권 도서
 - 교보문고 웹페이지 크롤링 : `키워드Pick`과 `책 소개` 데이터 수집
 - 키워드 추출을 통해 `책 소개` 에서 ‘책소개 키워드’ 추출
-- [✅ 최종 Dataframe](https://www.notion.so/Dataframe-fea5a5e43b6843cd9e2d8ee9fc98581d?pvs=21)
+- [✅ 최종 Dataframe](https://www.notion.so/Dataframe-390663378dd74e03833a9553716847f6?pvs=21)
 
 ### ▶︎ 추천 시스템 모델링
 
